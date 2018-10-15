@@ -8,6 +8,8 @@ import org.openrdf.rio.RDFFormat;
 import org.openrdf.rio.Rio;
 import org.openrdf.rio.helpers.RDFHandlerBase;
 
+
+
 public final class RDFRawParser {
 
 	private static class RDFListener extends RDFHandlerBase {
@@ -29,6 +31,7 @@ public final class RDFRawParser {
 		rdfParser.setRDFHandler(new RDFListener());
 		try {
 			rdfParser.parse(reader, "");
+
 		} catch (Exception e) {
 
 		}
