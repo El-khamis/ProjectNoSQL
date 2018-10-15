@@ -25,11 +25,10 @@ public final class RDFRawParser {
 		Reader reader = new FileReader(
 				"./donnees/100K.rdfxml");
 
-		org.openrdf.rio.RDFParser rdfParser = Rio
-				.createParser(RDFFormat.RDFXML);
+		org.openrdf.rio.RDFParser rdfParser = Rio.createParser(RDFFormat.RDFXML);
 		rdfParser.setRDFHandler(new RDFListener());
 		try {
-			rdfParser.parse(reader, "");
+			rdfParser.parse(reader, "okok");
 		} catch (Exception e) {
 
 		}
