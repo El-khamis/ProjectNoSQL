@@ -28,7 +28,7 @@ public final class RDFRawParser {
 		org.openrdf.rio.RDFParser rdfParser = Rio.createParser(RDFFormat.RDFXML);
 		rdfParser.setRDFHandler(new RDFListener());
 		try {
-			rdfParser.parse(reader, "okok");
+			rdfParser.parse(reader, "");
 		} catch (Exception e) {
 
 		}
