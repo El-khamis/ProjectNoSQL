@@ -7,6 +7,8 @@ public class dictionnaire {
 
     HashMap<Integer, String> hmap = new HashMap<Integer, String>();
 
+
+
     public dictionnaire()
     {
         HashMap<Integer, String> hmap = new HashMap<Integer, String>();
