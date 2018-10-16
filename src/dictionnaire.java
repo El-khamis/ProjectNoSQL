@@ -50,6 +50,8 @@ public class dictionnaire {
                 +st.getObject().toString().split("/")[st.getObject().toString().split("/").length - 1].toLowerCase());
     }
 
+
+
     //algo création index sop
     //l'algo créeé toutes les index à 3 valeurs
     /*ATTENTION bien spécifier l'index et verifier l'ordre des split exemple pour le spo:
@@ -60,7 +62,7 @@ public class dictionnaire {
      index=spo
 
      */
-     public void Index_creation(int sujet,int objet,int predicat,TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>> index) throws IOException {
+     public void Index_creation(int sujet,int predicat,int objet,TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>> index) throws IOException {
 
 
          FileInputStream fstream = new FileInputStream("FinalHashMap.txt");
@@ -81,38 +83,38 @@ public class dictionnaire {
                 TreeMap<Integer,TreeSet<Integer>> Objects_predicat= new TreeMap<Integer,TreeSet<Integer>>();
                 TreeSet<Integer> Objects= new TreeSet<Integer>();
 
-                Objects.add( Integer.parseInt(lineSplit[predicat]));
-                Objects_predicat.put( Integer.parseInt(lineSplit[objet]),Objects);
+                Objects.add( Integer.parseInt(lineSplit[objet]));
+                Objects_predicat.put( Integer.parseInt(lineSplit[predicat]),Objects);
 
                 index.put(Integer.parseInt(lineSplit[sujet]),Objects_predicat);
             }
-            //si la le sujet existe déjà
+            //si la le sujet existe déjà on recupère la treemap objet_predicat
             else{
                 TreeMap<Integer,TreeSet<Integer>> Objects_predicat= new TreeMap<Integer,TreeSet<Integer>>();
                  Objects_predicat=index.get(Integer.parseInt(lineSplit[sujet]));
 
                  //si le prédicat n'existe pas
-                 if(!Objects_predicat.containsKey(Integer.parseInt(lineSplit[1])))
+                 if(!Objects_predicat.containsKey(Integer.parseInt(lineSplit[predicat])))
                  {
                      //on créeé une nouvelle liste
-                     //on ajoute le nouvelle objet
+                     //on ajoute le nouvelle objet qui correspond au dernier argument de l'index qu'on veut
                      //on remplace par la nouvelle liste d'object
                      //on remplace par le nouvelle arbre
 
                      TreeSet<Integer> Objects= new TreeSet<Integer>();
-                     Objects.add(Integer.parseInt(lineSplit[predicat]));
-                     Objects_predicat.put(Integer.parseInt(lineSplit[objet]),Objects);
+                     Objects.add(Integer.parseInt(lineSplit[objet]));
+                     Objects_predicat.put(Integer.parseInt(lineSplit[predicat]),Objects);
                      index.replace(Integer.parseInt(lineSplit[sujet]),Objects_predicat);
                  }
                  else {
 
                      TreeSet<Integer> Objects= new TreeSet<Integer>();
-                     Objects=Objects_predicat.get( Integer.parseInt(lineSplit[objet]));
-                     Objects.add(Integer.parseInt(lineSplit[predicat]));
+                     Objects=Objects_predicat.get( Integer.parseInt(lineSplit[predicat]));
+                     Objects.add(Integer.parseInt(lineSplit[objet]));
 
                      //on remplace par la nouvelle liste d'object
                      //on remplace par le nouvelle arbre
-                     Objects_predicat.replace(Integer.parseInt(lineSplit[objet]),Objects);
+                     Objects_predicat.replace(Integer.parseInt(lineSplit[predicat]),Objects);
                      index.replace(Integer.parseInt(lineSplit[sujet]),Objects_predicat);
 
                  }
