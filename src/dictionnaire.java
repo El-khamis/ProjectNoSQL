@@ -13,12 +13,22 @@ public class dictionnaire {
     ArrayList<String> ourElements = new ArrayList<>();
 
     //index
-    TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>> pos =new TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>>();
+    //sujet en 1er
     TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>> sop =new TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>>();
+    TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>> spo =new TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>>();
+
+    //predicat en 1er
+    TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>> pos =new TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>>();
+    TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>> pso =new TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>>();
+
+    //objet en 1er
     TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>> osp =new TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>>();
+    TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>> ops =new TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>>();
 
 
     PrintWriter writer = new PrintWriter("Order.txt", "UTF-8");
+    PrintWriter writer2 = new PrintWriter("Dico.txt", "UTF-8");
+    PrintWriter writer3 = new PrintWriter("FinalHashMap.txt", "UTF-8");
 
     int cpt = 0;
     public dictionnaire() throws FileNotFoundException, UnsupportedEncodingException {
@@ -45,9 +55,12 @@ public class dictionnaire {
             ourElements.add(st.getObject().toString().split("/")[st.getObject().toString().split("/").length - 1].toLowerCase());
         }
 
+
+
         writer.println(st.getSubject().toString().split("/")[st.getSubject().toString().split("/").length - 1].toLowerCase()+","
                 +st.getPredicate().toString().split("/")[st.getPredicate().toString().split("/").length - 1].toLowerCase() +","
                 +st.getObject().toString().split("/")[st.getObject().toString().split("/").length - 1].toLowerCase());
+
     }
 
 
@@ -123,9 +136,6 @@ public class dictionnaire {
 
              br.close();
 
-
-
-
          }
 
 
@@ -137,7 +147,8 @@ public class dictionnaire {
 
 
     public void makeDictionnary() throws IOException {
-        PrintWriter writer2 = new PrintWriter("Dico.txt", "UTF-8");
+
+
         Collections.sort(ourElements);
         //on remplie les dico de bases
         for (String s : ourElements) {
@@ -149,10 +160,10 @@ public class dictionnaire {
         ourElements.clear();
         writer2.close();
 
-        PrintWriter writer3 = new PrintWriter("FinalHashMap.txt", "UTF-8");
 
 
         // Open the file
+//        PrintWriter writer = new PrintWriter("Order.txt", "UTF-8");
         FileInputStream fstream = new FileInputStream("Order.txt");
         BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
 
@@ -169,8 +180,6 @@ public class dictionnaire {
 
         //Close the input stream
         br.close();
-        writer3.close();
-        writer.close();
     }
 
 

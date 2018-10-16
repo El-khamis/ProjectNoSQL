@@ -37,7 +37,7 @@ public final class RDFRawParser {
 				e.printStackTrace();
 			}
 		}
-	};
+	}
 
 	public static void main(String args[]) throws FileNotFoundException, UnsupportedEncodingException {
 
@@ -57,6 +57,14 @@ public final class RDFRawParser {
 			rdfParser.parse(reader, "");
 
             dict.makeDictionnary();
+            //index pos
+          dict.Index_creation(1,2,0,dict.pos);
+			dict.writer3.close();
+			dict.writer.close();
+			dict.writer2.close();
+
+			//index print
+			System.out.println("execution terminé");
 		} catch (Exception e) {
 
 		}
