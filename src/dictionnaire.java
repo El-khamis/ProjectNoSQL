@@ -12,9 +12,10 @@ public class dictionnaire {
 
     ArrayList<String> ourElements = new ArrayList<>();
 
+    //index
     TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>> pos =new TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>>();
-
-
+    TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>> sop =new TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>>();
+    TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>> osp =new TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>>();
 
 
     PrintWriter writer = new PrintWriter("Order.txt", "UTF-8");
@@ -49,8 +50,19 @@ public class dictionnaire {
                 +st.getObject().toString().split("/")[st.getObject().toString().split("/").length - 1].toLowerCase());
     }
 
-    //algo création index pos
-     public void Pos_creation() throws IOException {
+    //algo création index sop
+    //l'algo créeé toutes les index à 3 valeurs
+    /*ATTENTION bien spécifier l'index et verifier l'ordre des split exemple pour le spo:
+
+     sujet=split[0]=>0
+     objet=split[1]=>1
+     predicat=split[2]=>2
+     index=spo
+
+     */
+     public void Index_creation(int sujet,int objet,int predicat,TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>> index) throws IOException {
+
+
          FileInputStream fstream = new FileInputStream("FinalHashMap.txt");
          BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
 
@@ -62,48 +74,52 @@ public class dictionnaire {
 
              //si la tree map ne contient pas le Sujet en index
              //integer parse int utilisé car les nombres sont vue comme des string et non des int
-             if(!pos.containsKey(Integer.parseInt(lineSplit[0])))
+             if(!index.containsKey(Integer.parseInt(lineSplit[sujet])))
             {
                 //on crée une treemap object predicat qui vas contenir le predicat
-                TreeMap<Integer,TreeSet<Integer>> Objects_predicat= new TreeMap<Integer,TreeSet<Integer>>();
                 //on crée Treeset object qui lui va juste être une liste d'objets
+                TreeMap<Integer,TreeSet<Integer>> Objects_predicat= new TreeMap<Integer,TreeSet<Integer>>();
                 TreeSet<Integer> Objects= new TreeSet<Integer>();
-                Objects.add( Integer.parseInt(lineSplit[2]));
-                Objects_predicat.put( Integer.parseInt(lineSplit[1]),Objects);
-                pos.put(Integer.parseInt(lineSplit[0]),Objects_predicat);
+
+                Objects.add( Integer.parseInt(lineSplit[predicat]));
+                Objects_predicat.put( Integer.parseInt(lineSplit[objet]),Objects);
+
+                index.put(Integer.parseInt(lineSplit[sujet]),Objects_predicat);
             }
             //si la le sujet existe déjà
             else{
                 TreeMap<Integer,TreeSet<Integer>> Objects_predicat= new TreeMap<Integer,TreeSet<Integer>>();
-                 Objects_predicat=pos.get(Integer.parseInt(lineSplit[0]));
+                 Objects_predicat=index.get(Integer.parseInt(lineSplit[sujet]));
 
                  //si le prédicat n'existe pas
                  if(!Objects_predicat.containsKey(Integer.parseInt(lineSplit[1])))
                  {
                      //on créeé une nouvelle liste
-                     TreeSet<Integer> Objects= new TreeSet<Integer>();
                      //on ajoute le nouvelle objet
-                     Objects.add(Integer.parseInt(lineSplit[2]));
                      //on remplace par la nouvelle liste d'object
-                     Objects_predicat.put(Integer.parseInt(lineSplit[1]),Objects);
                      //on remplace par le nouvelle arbre
-                     pos.replace(Integer.parseInt(lineSplit[0]),Objects_predicat);
+
+                     TreeSet<Integer> Objects= new TreeSet<Integer>();
+                     Objects.add(Integer.parseInt(lineSplit[predicat]));
+                     Objects_predicat.put(Integer.parseInt(lineSplit[objet]),Objects);
+                     index.replace(Integer.parseInt(lineSplit[sujet]),Objects_predicat);
                  }
                  else {
 
                      TreeSet<Integer> Objects= new TreeSet<Integer>();
-                     Objects=Objects_predicat.get( Integer.parseInt(lineSplit[1]));
-                     Objects.add(Integer.parseInt(lineSplit[2]));
+                     Objects=Objects_predicat.get( Integer.parseInt(lineSplit[objet]));
+                     Objects.add(Integer.parseInt(lineSplit[predicat]));
+
                      //on remplace par la nouvelle liste d'object
-                     Objects_predicat.replace(Integer.parseInt(lineSplit[1]),Objects);
                      //on remplace par le nouvelle arbre
-                     pos.replace(Integer.parseInt(lineSplit[0]),Objects_predicat);
+                     Objects_predicat.replace(Integer.parseInt(lineSplit[objet]),Objects);
+                     index.replace(Integer.parseInt(lineSplit[sujet]),Objects_predicat);
 
                  }
 
              }
 
-
+             br.close();
 
 
 
@@ -114,7 +130,6 @@ public class dictionnaire {
 
 
      }
-
 
 
 
