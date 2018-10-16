@@ -70,7 +70,38 @@ public class dictionnaire {
                 TreeSet<Integer> Objects= new TreeSet<Integer>();
                 Objects.add( Integer.parseInt(lineSplit[2]));
                 Objects_predicat.put( Integer.parseInt(lineSplit[1]),Objects);
+                pos.put(Integer.parseInt(lineSplit[0]),Objects_predicat);
             }
+            //si la le sujet existe déjà
+            else{
+                TreeMap<Integer,TreeSet<Integer>> Objects_predicat= new TreeMap<Integer,TreeSet<Integer>>();
+                 Objects_predicat=pos.get(Integer.parseInt(lineSplit[0]));
+
+                 //si le prédicat n'existe pas
+                 if(!Objects_predicat.containsKey(Integer.parseInt(lineSplit[1])))
+                 {
+                     //on créeé une nouvelle liste
+                     TreeSet<Integer> Objects= new TreeSet<Integer>();
+                     //on ajoute le nouvelle objet
+                     Objects.add(Integer.parseInt(lineSplit[2]));
+                     //on remplace par la nouvelle liste d'object
+                     Objects_predicat.put(Integer.parseInt(lineSplit[1]),Objects);
+                     //on remplace par le nouvelle arbre
+                     pos.replace(Integer.parseInt(lineSplit[0]),Objects_predicat);
+                 }
+                 else {
+
+                     TreeSet<Integer> Objects= new TreeSet<Integer>();
+                     Objects=Objects_predicat.get( Integer.parseInt(lineSplit[1]));
+                     Objects.add(Integer.parseInt(lineSplit[2]));
+                     //on remplace par la nouvelle liste d'object
+                     Objects_predicat.replace(Integer.parseInt(lineSplit[1]),Objects);
+                     //on remplace par le nouvelle arbre
+                     pos.replace(Integer.parseInt(lineSplit[0]),Objects_predicat);
+
+                 }
+
+             }
 
 
 
