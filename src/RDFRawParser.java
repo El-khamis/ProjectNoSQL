@@ -41,31 +41,37 @@ public final class RDFRawParser {
 
 	public static void main(String args[]) throws FileNotFoundException, UnsupportedEncodingException {
 
-
-
+		long start = System.nanoTime();
 
 		Reader reader = new FileReader(
 				"./donnees/100K.rdfxml");
 
 		org.openrdf.rio.RDFParser rdfParser = Rio.createParser(RDFFormat.RDFXML);
 		rdfParser.setRDFHandler(new RDFListener());
-
+		long elapsedTime = System.nanoTime() - start;
+		elapsedTime = (long) (elapsedTime /  1000F);
+		System.out.println("Rio parse a pris "+ elapsedTime);
 
 
 
 		try {
 			rdfParser.parse(reader, "");
-
+			elapsedTime = (long) (elapsedTime /  1000F);
+			System.out.println("Rdf.parse"+ elapsedTime);
             dict.makeDictionnary();
+            elapsedTime = System.nanoTime() - start;
+            elapsedTime = (long) (elapsedTime /  1000F);
+			System.out.println("Makedico a pris "+ elapsedTime);
             //index pos
-           dict.Index_creation(1,2,0,dict.pos);
+            dict.Index_creation(dict.sujet_int,dict.predicat_int,dict.objet_int,dict.pos);
 			dict.writer3.close();
 			dict.writer.close();
-			dict.writer2.close();
+			//dict.writer2.close();
 
-			dict.pos.get(99382).get(6715).toString();
 			//index print
-			System.out.println("execution terminé");
+			elapsedTime = System.nanoTime() - start;
+			elapsedTime = (long) (elapsedTime /  1000F);
+			System.out.println("execution terminé en  "+ elapsedTime);
 		} catch (Exception e) {
 
 		}
