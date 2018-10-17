@@ -58,11 +58,12 @@ public final class RDFRawParser {
 
             dict.makeDictionnary();
             //index pos
-          dict.Index_creation(1,2,0,dict.pos);
+           dict.Index_creation(1,2,0,dict.pos);
 			dict.writer3.close();
 			dict.writer.close();
 			dict.writer2.close();
 
+			dict.pos.get(99382).get(6715).toString();
 			//index print
 			System.out.println("execution terminé");
 		} catch (Exception e) {
