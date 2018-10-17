@@ -41,14 +41,15 @@ public final class RDFRawParser {
 
 	public static void main(String args[]) throws FileNotFoundException, UnsupportedEncodingException {
 
-		long start = System.nanoTime();
+		long start = System.currentTimeMillis();
+
 
 		Reader reader = new FileReader(
 				"./donnees/100K.rdfxml");
 
 		org.openrdf.rio.RDFParser rdfParser = Rio.createParser(RDFFormat.RDFXML);
 		rdfParser.setRDFHandler(new RDFListener());
-		long elapsedTime = System.nanoTime() - start;
+		float elapsedTime = System.currentTimeMillis() - start;
 		elapsedTime = (long) (elapsedTime /  1000F);
 		System.out.println("Rio parse a pris "+ elapsedTime);
 
@@ -56,21 +57,22 @@ public final class RDFRawParser {
 
 		try {
 			rdfParser.parse(reader, "");
-			elapsedTime = (long) (elapsedTime /  1000F);
+			elapsedTime =  (elapsedTime /  1000F);
 			System.out.println("Rdf.parse"+ elapsedTime);
             dict.makeDictionnary();
-            elapsedTime = System.nanoTime() - start;
-            elapsedTime = (long) (elapsedTime /  1000F);
+            elapsedTime = System.currentTimeMillis() - start;
+            elapsedTime =  (elapsedTime /  1000F);
 			System.out.println("Makedico a pris "+ elapsedTime);
             //index pos
-            dict.Index_creation(dict.sujet_int,dict.predicat_int,dict.objet_int,dict.pos);
-			dict.writer3.close();
-			dict.writer.close();
-			//dict.writer2.close();
+            dict.Index_creation(dict.sujet_int,dict.predicat_int,dict.objet_int,dict.spo);
+			dict.Index_creation(dict.predicat_int,dict.objet_int,dict.sujet_int,dict.pos);
+			dict.Index_creation(dict.sujet_int,dict.objet_int,dict.predicat_int,dict.sop);
+			dict.Index_creation(dict.predicat_int,dict.sujet_int,dict.objet_int,dict.pso);
 
 			//index print
-			elapsedTime = System.nanoTime() - start;
-			elapsedTime = (long) (elapsedTime /  1000F);
+
+			elapsedTime = System.currentTimeMillis() - start;
+			elapsedTime =  (elapsedTime /  1000F);
 			System.out.println("execution terminé en  "+ elapsedTime);
 		} catch (Exception e) {
 

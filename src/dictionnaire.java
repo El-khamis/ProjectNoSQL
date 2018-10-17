@@ -37,9 +37,6 @@ public class dictionnaire {
 
 
 
-    PrintWriter writer = new PrintWriter("Order.txt", "UTF-8");
-//    PrintWriter writer2 = new PrintWriter("Dico.txt", "UTF-8");
-    PrintWriter writer3 = new PrintWriter("FinalHashMap.txt", "UTF-8");
 
     int cpt = 0;
     public dictionnaire() throws FileNotFoundException, UnsupportedEncodingException {
@@ -90,25 +87,25 @@ objet_int sujet_int predicat_int
          {
              //si la tree map ne contient pas le Sujet en index
              //integer parse int utilisé car les nombres sont vue comme des string et non des int
-             if(!index.containsKey(sujet_int.get(i)))
+             if(!index.containsKey(sujet.get(i)))
             {
                 //on crée une treemap object predicat qui vas contenir le predicat
                 //on crée Treeset object qui lui va juste être une liste d'objets
                 TreeMap<Integer,TreeSet<Integer>> Objects_predicat= new TreeMap<Integer,TreeSet<Integer>>();
                 TreeSet<Integer> Objects= new TreeSet<Integer>();
 
-                Objects.add( objet_int.get(i));
-                Objects_predicat.put( predicat_int.get(i),Objects);
+                Objects.add( objet.get(i));
+                Objects_predicat.put( predicat.get(i),Objects);
 
-                index.put(sujet_int.get(i),Objects_predicat);
+                index.put(sujet.get(i),Objects_predicat);
             }
             //si la le sujet existe déjà on recupère la treemap objet_predicat
             else{
                 TreeMap<Integer,TreeSet<Integer>> Objects_predicat= new TreeMap<Integer,TreeSet<Integer>>();
-                 Objects_predicat=index.get(sujet_int.get(i));
+                 Objects_predicat=index.get(sujet.get(i));
 
                  //si le prédicat n'existe pas
-                 if(!Objects_predicat.containsKey( predicat_int.get(i)))
+                 if(!Objects_predicat.containsKey( predicat.get(i)))
                  {
                      //on créeé une nouvelle liste
                      //on ajoute le nouvelle objet qui correspond au dernier argument de l'index qu'on veut
@@ -116,20 +113,20 @@ objet_int sujet_int predicat_int
                      //on remplace par le nouvelle arbre
 
                      TreeSet<Integer> Objects= new TreeSet<Integer>();
-                     Objects.add(objet_int.get(i));
-                     Objects_predicat.put(predicat_int.get(i),Objects);
-                     index.replace(sujet_int.get(i),Objects_predicat);
+                     Objects.add(objet.get(i));
+                     Objects_predicat.put(predicat.get(i),Objects);
+                     index.replace(sujet.get(i),Objects_predicat);
                  }
                  else {
 
                      TreeSet<Integer> Objects= new TreeSet<Integer>();
-                     Objects=Objects_predicat.get( predicat_int.get(i));
-                     Objects.add(sujet_int.get(i));
+                     Objects=Objects_predicat.get( predicat.get(i));
+                     Objects.add(sujet.get(i));
 
                      //on remplace par la nouvelle liste d'object
                      //on remplace par le nouvelle arbre
-                     Objects_predicat.replace(predicat_int.get(i),Objects);
-                     index.replace(sujet_int.get(i),Objects_predicat);
+                     Objects_predicat.replace(predicat.get(i),Objects);
+                     index.replace(sujet.get(i),Objects_predicat);
 
                  }
 
@@ -145,7 +142,6 @@ objet_int sujet_int predicat_int
         Collections.sort(ourElements);
         //on remplie les dico de bases
         for (String s : ourElements) {
-            writer.println(s);
             hmap.put(s, cpt);
             hmap_inverse.put(cpt,s);
             cpt++;
@@ -158,8 +154,8 @@ objet_int sujet_int predicat_int
             objet_int.add(hmap.get(objet_string.get(compteur)));
             predicat_int.add(hmap.get(predicat_string.get(compteur)));
             compteur++;
-
         }
+        System.out.println("Le compteur fait "+compteur+" lignes ");
 
      }
 
