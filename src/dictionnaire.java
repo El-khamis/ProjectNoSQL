@@ -9,7 +9,7 @@ public class dictionnaire {
 
     HashMap<String, Integer> hmap = new HashMap<String , Integer>();
     HashMap<Integer,String > hmap_inverse = new HashMap<Integer , String>();
-
+    int tailleMax = 0;
     ArrayList<String> ourElements = new ArrayList<>();
 
     //index
@@ -22,6 +22,8 @@ public class dictionnaire {
     TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>> pso =new TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>>();
 
     //objet en 1er
+
+
     TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>> osp =new TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>>();
     TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>> ops =new TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>>();
 
@@ -35,8 +37,9 @@ public class dictionnaire {
     ArrayList<Integer> sujet_int = new ArrayList();
     ArrayList<Integer> predicat_int = new ArrayList();
 
-
-
+    //stats//
+    TreeMap<Integer,Double> statistique_sujet = new TreeMap<Integer,Double>();
+    TreeMap<Integer,TreeMap<Integer,Double>> statistique_sujet_predicat = new TreeMap<Integer,TreeMap<Integer,Double>>();
 
     int cpt = 0;
     public dictionnaire() throws FileNotFoundException, UnsupportedEncodingException {
@@ -52,6 +55,7 @@ public class dictionnaire {
         }
         sujet_string.add(st.getSubject().toString().toLowerCase());
 
+        this.tailleMax++;
 
         if (!ourElements.contains(st.getPredicate().toString().toLowerCase())) {
             ourElements.add(st.getPredicate().toString().toLowerCase());
@@ -69,17 +73,7 @@ public class dictionnaire {
 
 
 
-    //algo création index sop
-    //l'algo créeé toutes les index à 3 valeurs
-    /*ATTENTION bien spécifier l'index et verifier l'ordre des split exemple pour le spo:
-
-     sujet=split[0]=>0
-     objet=split[1]=>1
-     predicat=split[2]=>2
-     index=spo
-objet_int sujet_int predicat_int
-     */
-     public void Index_creation(ArrayList<Integer> sujet,ArrayList<Integer>  predicat,ArrayList<Integer>  objet,TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>> index) throws IOException {
+     public void Index_creation(ArrayList<Integer> sujet,ArrayList<Integer>  predicat,ArrayList<Integer>  objet,TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>> index,TreeMap<Integer, TreeMap<Integer,Double>> statistique,TreeMap<Integer,Double>stat_secondaire) throws IOException {
 
 
 
@@ -87,7 +81,7 @@ objet_int sujet_int predicat_int
 
          {
              //si la tree map ne contient pas le Sujet en index
-             //integer parse int utilisé car les nombres sont vue comme des string et non des int
+
              if(!index.containsKey(sujet.get(i)))
             {
                 //on crée une treemap object predicat qui vas contenir le predicat
@@ -99,11 +93,38 @@ objet_int sujet_int predicat_int
                 Objects_predicat.put( predicat.get(i),Objects);
 
                 index.put(sujet.get(i),Objects_predicat);
+
+                //--------------stats---------------//
+                /*ici rien exist initialisation des stats
+                stats_secondaire corespond au nombre d'occurence S
+                statp statistique correspond au stat sur S P
+                */
+
+
+                stat_secondaire.put(sujet.get(i),1.0);
+
+                TreeMap<Integer,Double> statp =new TreeMap<Integer,Double>();
+
+                statp.put(predicat.get(i),1.0);
+                statistique.put(sujet.get(i),statp);
+
+
+
+
             }
-            //si la le sujet existe déjà on recupère la treemap objet_predicat
+            //si le sujet existe déjà on recupère la treemap objet_predicat
             else{
-                TreeMap<Integer,TreeSet<Integer>> Objects_predicat= new TreeMap<Integer,TreeSet<Integer>>();
+
+                 TreeMap<Integer,TreeSet<Integer>> Objects_predicat= new TreeMap<Integer,TreeSet<Integer>>();
                  Objects_predicat=index.get(sujet.get(i));
+
+
+                 //--------stats----------//
+                 /* on incrément la valeur pour S */
+
+                 double valeurStats =stat_secondaire.get(sujet.get(i));
+                 valeurStats = valeurStats+1;
+                 stat_secondaire.put(sujet.get(i),valeurStats);
 
                  //si le prédicat n'existe pas
                  if(!Objects_predicat.containsKey( predicat.get(i)))
@@ -117,8 +138,18 @@ objet_int sujet_int predicat_int
                      Objects.add(objet.get(i));
                      Objects_predicat.put(predicat.get(i),Objects);
                      index.replace(sujet.get(i),Objects_predicat);
+
+                     //-----------stats--------------//
+                    /* ici statististique éxiste déjà  on s'occupe juste de statistique*/
+                     TreeMap<Integer,Double> statp =new TreeMap<Integer,Double>();
+                     statp.put(predicat.get(i),1.0);
+                     statistique.put(sujet.get(i),statp);
+
+
                  }
                  else {
+
+
 
                      TreeSet<Integer> Objects= new TreeSet<Integer>();
                      Objects=Objects_predicat.get( predicat.get(i));
@@ -129,10 +160,22 @@ objet_int sujet_int predicat_int
                      Objects_predicat.replace(predicat.get(i),Objects);
                      index.replace(sujet.get(i),Objects_predicat);
 
+                    //-------------------------stats----------------------//
+
+                     //on recupère la valeur dans statistique qui correspond à S et P
+                     double valeurStats2 =statistique.get(sujet.get(i)).get(predicat.get(i));
+                     valeurStats2 = valeurStats2+1;
+
+                     //on reconstruit un treemap en affectant la bonne valeur //
+                     TreeMap<Integer,Double> statp =new TreeMap<Integer,Double>();
+                     statp.put(predicat.get(i),valeurStats2);
+                     statistique.put(sujet.get(i),statp);
+
+
+
+
                  }
-
              }
-
          }
      }
 

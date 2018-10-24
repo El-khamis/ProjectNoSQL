@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.*;
 import java.util.Dictionary;
-import java.util.Scanner;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.openrdf.model.Statement;
 import org.openrdf.rio.RDFFormat;
@@ -15,6 +17,7 @@ import org.openrdf.rio.helpers.RDFHandlerBase;
 
 public final class RDFRawParser {
     static dictionnaire dict;
+
 	static {
 		try {
 			dict = new dictionnaire();
@@ -42,42 +45,38 @@ public final class RDFRawParser {
 
 	public static void main(String args[]) throws IOException {
 
-//		long start = System.currentTimeMillis();
-//
-//
-//		Reader reader = new FileReader(
-//				"./donnees/100K.rdfxml");
-//
-//		org.openrdf.rio.RDFParser rdfParser = Rio.createParser(RDFFormat.RDFXML);
-//		rdfParser.setRDFHandler(new RDFListener());
-//		float elapsedTime = System.currentTimeMillis() - start;
-//		elapsedTime = (long) (elapsedTime /  1000F);
-//		System.out.println("Rio parse a pris "+ elapsedTime);
-//
-//
-//
-//		try {
-//			rdfParser.parse(reader, "");
-//
-//			elapsedTime =  (elapsedTime /  1000F);
-//			System.out.println("Rdf.parse"+ elapsedTime);
-//
-//			dict.makeDictionnary();
-//
-//            elapsedTime = System.currentTimeMillis() - start;
-//            elapsedTime =  (elapsedTime /  1000F);
-//			System.out.println("Makedico a pris "+ elapsedTime);
-//            //index pos
-//            dict.Index_creation(dict.sujet_int,dict.predicat_int,dict.objet_int,dict.spo);
-//			dict.Index_creation(dict.predicat_int,dict.objet_int,dict.sujet_int,dict.pos);
-//			dict.Index_creation(dict.sujet_int,dict.objet_int,dict.predicat_int,dict.sop);
-//			dict.Index_creation(dict.predicat_int,dict.sujet_int,dict.objet_int,dict.pso);
-//
-//			//index print
-//
-//			elapsedTime = System.currentTimeMillis() - start;
-//			elapsedTime =  (elapsedTime /  1000F);
-//			System.out.println("execution terminé en  "+ elapsedTime);
+		long start = System.currentTimeMillis();
+
+
+		Reader reader = new FileReader(
+				"./donnees/100K.rdfxml");
+
+		org.openrdf.rio.RDFParser rdfParser = Rio.createParser(RDFFormat.RDFXML);
+		rdfParser.setRDFHandler(new RDFListener());
+		float elapsedTime = System.currentTimeMillis() - start;
+		elapsedTime = (long) (elapsedTime /  1000F);
+		System.out.println("Rio parse a pris "+ elapsedTime);
+
+
+
+		try {
+			rdfParser.parse(reader, "");
+
+			elapsedTime =  (elapsedTime /  1000F);
+			System.out.println("Rdf.parse"+ elapsedTime);
+
+			dict.makeDictionnary();
+            //index pos
+            dict.Index_creation(dict.sujet_int,dict.predicat_int,dict.objet_int,dict.spo,dict.statistique_sujet_predicat,dict.statistique_sujet);
+            //index print
+
+            elapsedTime = System.currentTimeMillis() - start;
+            elapsedTime =  (elapsedTime /  1000F);
+			System.out.println("Makedico a pris "+ elapsedTime);
+
+			elapsedTime = System.currentTimeMillis() - start;
+			elapsedTime =  (elapsedTime /  1000F);
+			System.out.println("execution terminé en  "+ elapsedTime);
 			Outils outil = new Outils();
 
 			System.out.println("Veuillez entrer une requête");
@@ -96,18 +95,14 @@ public final class RDFRawParser {
 
                 }
 			}
+		} catch (Exception e) {
 
-//		} catch (Exception e) {
-//
-//		}
-//
-//
-//
-//		try {
-//			reader.close();
-//		} catch (IOException e) {
-//		}
+		}
 
+		try {
+			reader.close();
+		} catch (IOException e) {
+		}
 
 	}
 }
