@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.*;
 import java.util.Dictionary;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.openrdf.model.Statement;
 import org.openrdf.rio.RDFFormat;
@@ -67,11 +70,7 @@ public final class RDFRawParser {
             elapsedTime =  (elapsedTime /  1000F);
 			System.out.println("Makedico a pris "+ elapsedTime);
             //index pos
-            dict.Index_creation(dict.sujet_int,dict.predicat_int,dict.objet_int,dict.spo);
-			dict.Index_creation(dict.predicat_int,dict.objet_int,dict.sujet_int,dict.pos);
-			dict.Index_creation(dict.sujet_int,dict.objet_int,dict.predicat_int,dict.sop);
-			dict.Index_creation(dict.predicat_int,dict.sujet_int,dict.objet_int,dict.pso);
-
+            dict.Index_creation(dict.sujet_int,dict.predicat_int,dict.objet_int,dict.spo,dict.statistique_sujet_predicat,dict.statistique_sujet);
 			//index print
 
 			elapsedTime = System.currentTimeMillis() - start;
