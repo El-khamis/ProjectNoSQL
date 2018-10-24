@@ -47,21 +47,21 @@ public class dictionnaire {
     //fonction qui remplis l'array liste pour avoir la première version du dico
     public void addArrayList(Statement st) throws FileNotFoundException, UnsupportedEncodingException {
 
-        if (!ourElements.contains(st.getSubject().toString().split("/")[st.getSubject().toString().split("/").length - 1].toLowerCase())) {
-            ourElements.add(st.getSubject().toString().split("/")[st.getSubject().toString().split("/").length - 1].toLowerCase());
+        if (!ourElements.contains(st.getSubject().toString().toLowerCase())) {
+            ourElements.add(st.getSubject().toString().toLowerCase());
         }
-        sujet_string.add(st.getSubject().toString().split("/")[st.getSubject().toString().split("/").length - 1].toLowerCase());
+        sujet_string.add(st.getSubject().toString().toLowerCase());
 
-        if (!ourElements.contains(st.getPredicate().toString().split("/")[st.getPredicate().toString().split("/").length - 1].toLowerCase())) {
-            ourElements.add(st.getPredicate().toString().split("/")[st.getPredicate().toString().split("/").length - 1].toLowerCase());
+        if (!ourElements.contains(st.getPredicate().toString().toLowerCase())) {
+            ourElements.add(st.getPredicate().toString().toLowerCase());
         }
-        predicat_string.add(st.getPredicate().toString().split("/")[st.getPredicate().toString().split("/").length - 1].toLowerCase());
+        predicat_string.add(st.getPredicate().toString().toLowerCase());
 
 
-        if (!ourElements.contains(st.getObject().toString().split("/")[st.getObject().toString().split("/").length - 1].toLowerCase())) {
-            ourElements.add(st.getObject().toString().split("/")[st.getObject().toString().split("/").length - 1].toLowerCase());
+        if (!ourElements.contains(st.getObject().toString().toLowerCase())) {
+            ourElements.add(st.getObject().toString().toLowerCase());
         }
-        objet_string.add(st.getObject().toString().split("/")[st.getObject().toString().split("/").length - 1].toLowerCase());
+        objet_string.add(st.getObject().toString().toLowerCase());
 
 
     }

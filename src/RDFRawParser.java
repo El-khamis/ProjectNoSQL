@@ -57,9 +57,12 @@ public final class RDFRawParser {
 
 		try {
 			rdfParser.parse(reader, "");
+
 			elapsedTime =  (elapsedTime /  1000F);
 			System.out.println("Rdf.parse"+ elapsedTime);
-            dict.makeDictionnary();
+
+			dict.makeDictionnary();
+
             elapsedTime = System.currentTimeMillis() - start;
             elapsedTime =  (elapsedTime /  1000F);
 			System.out.println("Makedico a pris "+ elapsedTime);
