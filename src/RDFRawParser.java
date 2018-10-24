@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.*;
 import java.util.Dictionary;
+import java.util.Scanner;
 
 import org.openrdf.model.Statement;
 import org.openrdf.rio.RDFFormat;
@@ -14,7 +15,6 @@ import org.openrdf.rio.helpers.RDFHandlerBase;
 
 public final class RDFRawParser {
     static dictionnaire dict;
-
 	static {
 		try {
 			dict = new dictionnaire();
@@ -39,7 +39,8 @@ public final class RDFRawParser {
 		}
 	}
 
-	public static void main(String args[]) throws FileNotFoundException, UnsupportedEncodingException {
+
+	public static void main(String args[]) throws IOException {
 
 		long start = System.currentTimeMillis();
 
@@ -77,13 +78,28 @@ public final class RDFRawParser {
 			elapsedTime = System.currentTimeMillis() - start;
 			elapsedTime =  (elapsedTime /  1000F);
 			System.out.println("execution terminé en  "+ elapsedTime);
+			Outils outil = new Outils();
+
+			System.out.println("Veuillez entrer une requête");
+			String requete;
+			BufferedReader br;
+			br = new BufferedReader(new FileReader(new File("./donnees/requetes.txt")));
+			while ((requete = br.readLine()) != null){
+				outil.parse_requete(requete);
+
+			}
+
 		} catch (Exception e) {
 
 		}
+
+
 
 		try {
 			reader.close();
 		} catch (IOException e) {
 		}
+
+
 	}
 }

@@ -1,0 +1,3 @@
+select ?x where { ?x lives_in out . ?x fait 13 . ?x loge ici }
+select ?x where { ?x lives_in out . ?g fait 13 . ?x loge ici }
+select ?x where { ?x lives_in out . ?x fait 13 . ?v loge ici }
