@@ -52,6 +52,7 @@ public class dictionnaire {
         }
         sujet_string.add(st.getSubject().toString().toLowerCase());
 
+
         if (!ourElements.contains(st.getPredicate().toString().toLowerCase())) {
             ourElements.add(st.getPredicate().toString().toLowerCase());
         }
