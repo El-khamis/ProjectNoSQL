@@ -7,6 +7,7 @@ import java.util.Dictionary;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.Scanner;
 
 import org.openrdf.model.Statement;
 import org.openrdf.rio.RDFFormat;
@@ -54,15 +55,25 @@ public final class RDFRawParser {
 		rdfParser.setRDFHandler(new RDFListener());
 		float elapsedTime = System.currentTimeMillis() - start;
 		elapsedTime = (long) (elapsedTime /  1000F);
-		System.out.println("Rio parse a pris "+ elapsedTime+"sec");
+		System.out.println("Rio parse a pris "+ elapsedTime);
 
 
+			System.out.println("Veuillez entrer une requête");
+			String requete = " ";
+			String line;
+			BufferedReader br;
+			br = new BufferedReader(new FileReader(new File("./donnees/requetes.txt")));
+			while ((line = br.readLine()) != null){
+                requete+=" "+ line;
 
-		try {
-			rdfParser.parse(reader, "");
+                if(line.contains("}")){
+                    outil.parse_requete(requete);
+                    requete = "";
+                }
+                else if(requete.contains("}")){
 
-			elapsedTime =  (elapsedTime /  1000F);
-			System.out.println("Rdf.parse"+ elapsedTime);
+                }
+			}
 
 			dict.makeDictionnary();
 
