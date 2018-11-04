@@ -6,7 +6,6 @@ import java.lang.reflect.Array;
 import java.util.*;
 
 public class dictionnaire {
-
     HashMap<String, Integer> hmap = new HashMap<String , Integer>();
     HashMap<Integer,String > hmap_inverse = new HashMap<Integer , String>();
     int tailleMax = 0;
@@ -22,8 +21,6 @@ public class dictionnaire {
     TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>> pso =new TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>>();
 
     //objet en 1er
-
-
     TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>> osp =new TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>>();
     TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>> ops =new TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>>();
 
@@ -75,15 +72,9 @@ public class dictionnaire {
 
      public void Index_creation(ArrayList<Integer> sujet,ArrayList<Integer>  predicat,ArrayList<Integer>  objet,TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>> index,TreeMap<Integer, TreeMap<Integer,Double>> statistique,TreeMap<Integer,Double>stat_secondaire) throws IOException {
 
-
-
-         for(int i=0;i<sujet_int.size();i++)
-
-         {
+         for(int i=0;i<sujet_int.size();i++) {
              //si la tree map ne contient pas le Sujet en index
-
-             if(!index.containsKey(sujet.get(i)))
-            {
+             if(!index.containsKey(sujet.get(i))){
                 //on crée une treemap object predicat qui vas contenir le predicat
                 //on crée Treeset object qui lui va juste être une liste d'objets
                 TreeMap<Integer,TreeSet<Integer>> Objects_predicat= new TreeMap<Integer,TreeSet<Integer>>();
@@ -100,21 +91,13 @@ public class dictionnaire {
                 statp statistique correspond au stat sur S P
                 */
 
-
                 stat_secondaire.put(sujet.get(i),1.0);
-
                 TreeMap<Integer,Double> statp =new TreeMap<Integer,Double>();
-
                 statp.put(predicat.get(i),1.0);
                 statistique.put(sujet.get(i),statp);
-
-
-
-
             }
             //si le sujet existe déjà on recupère la treemap objet_predicat
             else{
-
                  TreeMap<Integer,TreeSet<Integer>> Objects_predicat= new TreeMap<Integer,TreeSet<Integer>>();
                  Objects_predicat=index.get(sujet.get(i));
 
@@ -145,12 +128,8 @@ public class dictionnaire {
                      statp.put(predicat.get(i),1.0);
                      statistique.put(sujet.get(i),statp);
 
-
                  }
                  else {
-
-
-
                      TreeSet<Integer> Objects= new TreeSet<Integer>();
                      Objects=Objects_predicat.get( predicat.get(i));
                      Objects.add(sujet.get(i));
@@ -170,10 +149,6 @@ public class dictionnaire {
                      TreeMap<Integer,Double> statp =new TreeMap<Integer,Double>();
                      statp.put(predicat.get(i),valeurStats2);
                      statistique.put(sujet.get(i),statp);
-
-
-
-
                  }
              }
          }
@@ -202,6 +177,5 @@ public class dictionnaire {
         System.out.println("Le compteur fait "+compteur+" lignes ");
 
      }
-
 
 }

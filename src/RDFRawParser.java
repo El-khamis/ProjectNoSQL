@@ -54,7 +54,7 @@ public final class RDFRawParser {
 		rdfParser.setRDFHandler(new RDFListener());
 		float elapsedTime = System.currentTimeMillis() - start;
 		elapsedTime = (long) (elapsedTime /  1000F);
-		System.out.println("Rio parse a pris "+ elapsedTime);
+		System.out.println("Rio parse a pris "+ elapsedTime+"sec");
 
 
 
@@ -68,14 +68,14 @@ public final class RDFRawParser {
 
             elapsedTime = System.currentTimeMillis() - start;
             elapsedTime =  (elapsedTime /  1000F);
-			System.out.println("Makedico a pris "+ elapsedTime);
+			System.out.println("Makedico a pris "+ elapsedTime +"sec");
             //index pos
             dict.Index_creation(dict.sujet_int,dict.predicat_int,dict.objet_int,dict.spo,dict.statistique_sujet_predicat,dict.statistique_sujet);
 			//index print
 
 			elapsedTime = System.currentTimeMillis() - start;
 			elapsedTime =  (elapsedTime /  1000F);
-			System.out.println("execution terminé en  "+ elapsedTime);
+			System.out.println("execution termine en  "+ elapsedTime+"sec");
 		} catch (Exception e) {
 
 		}
