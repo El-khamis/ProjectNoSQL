@@ -15,16 +15,15 @@ public class Outils {
     public void retrieve_requete(String path){
         File folder = new File(path);
         File[] listOfFiles = folder.listFiles();
-        String requete = " ";
+        String requete;
         String line;
         BufferedReader br;
-
+        //Parcours des fichiers dans le dossier
         for (int i = 0; i < listOfFiles.length; i++) {
             if (listOfFiles[i].isFile()) {
                 try{
                     //je l'ouvre, je le parcours et pour chaque requete j'appelle parse_requeteString requete = " ";
                         requete = " ";
-                        line = "";
                         br = new BufferedReader(new FileReader(new File(path+"/"+listOfFiles[i].getName())));
                         while ((line = br.readLine()) != null){
                             requete+=" "+ line;
@@ -34,12 +33,8 @@ public class Outils {
                             }
                         }
                     } catch (Exception e) {
-                        System.out.println("Une erreur est survnue "+e);
-                    }
-                System.out.println("File " + listOfFiles[i].getName());
-            }
-            else if (listOfFiles[i].isDirectory()) {
-                System.out.println("Directory " + listOfFiles[i].getName());
+                        // System.out.println("Une erreur est survenue "+e);
+                }
             }
         }
     }
@@ -63,7 +58,7 @@ public class Outils {
 
         for (String s1 : corps[1].split(" ")) {
             if (s1.contains("?") && !s1.equals(maVariable)) {
-                System.out.println("La requete n'est pas une requete étoile\n");
+                // System.out.println("La requete n'est pas une requete étoile\n");
                 return;
             }
         }
@@ -95,12 +90,11 @@ public class Outils {
             }
 
         }
-        execute_requetev2(predicats_int,objets_int,dict);
+        execute_requete(predicats_int,objets_int,dict);
 
     }
 
-
-    public void execute_requetev2(ArrayList<Integer> listP, ArrayList<Integer> listO, dictionnaire dict){
+    public void execute_requete(ArrayList<Integer> listP, ArrayList<Integer> listO, dictionnaire dict){
         Boolean repEx = false;
         ArrayList<Integer> stockRep = new ArrayList<>();
         ArrayList<Integer> reponse = new ArrayList<>();
@@ -110,7 +104,7 @@ public class Outils {
         listO.removeAll(Collections.singleton(null));
         listP.removeAll(Collections.singleton(null));
         if(listP.size()!=listO.size()){
-            System.out.println("Impossible. ");
+            // System.out.println("Impossible. ");
             return;
         }
 
@@ -135,12 +129,12 @@ public class Outils {
                                 reponse.add(maVar);
                             }
                             else{
-                                System.out.println("Ce n'est pas un sujet "+dict.hmap_inverse.get(maVar));
+                                // System.out.println("Ce n'est pas un sujet "+dict.hmap_inverse.get(maVar));
                             }
                         }
                     }
                     catch (NullPointerException e){
-                        System.out.println(e+"un triplet n'existe pas");
+                        // System.out.println(e+"un triplet n'existe pas");
                         return;
                     }
 
@@ -157,39 +151,39 @@ public class Outils {
                                 reponse.add(maVar);
                             }
                             else{
-                                System.out.println("Ce n'est pas un sujet "+dict.hmap_inverse.get(maVar));
+                                // System.out.println("Ce n'est pas un sujet "+dict.hmap_inverse.get(maVar));
                             }
 
                         }
                     }
                     catch(NullPointerException e){
-                        System.out.println(e+" Un triplet n'existe pas");
+                        // System.out.println(e+" Un triplet n'existe pas");
                         return;
                     }
 
                 }
             }
             else{
-                System.out.println("Erreur de requete, objet ou predicat non existant");
+                // System.out.println("Erreur de requete, objet ou predicat non existant");
                 return;
             }
         }
 
         if (reponse.size()==0){
-            System.out.println("La requete n'a pas de réponse");
+            // System.out.println("La requete n'a pas de réponse");
             return;
         }
         if (listP.size() == 1){
             for (Integer rep : reponse)
             {
-                System.out.println("La réponse est "+rep+" ce qui correspond a "+dict.hmap_inverse.get(rep));
+                // System.out.println("La réponse est "+rep+" ce qui correspond a "+dict.hmap_inverse.get(rep));
             }
-            System.out.println("Il y a "+reponse.size()+" reponses");
+            // System.out.println("Il y a "+reponse.size()+" reponses");
         }
         else{
             for (Integer rep: reponse) {
                 if(Collections.frequency(reponse,rep) == listP.size() && !stockRep.contains(rep)){
-                    System.out.println("La réponse est "+rep+" ce qui correspond a "+dict.hmap_inverse.get(rep));
+                    // System.out.println("La réponse est "+rep+" ce qui correspond a "+dict.hmap_inverse.get(rep));
                     stockRep.add(rep);
                     //reponse.remove(rep);
                     repEx=true;
@@ -197,7 +191,7 @@ public class Outils {
             }
         }
         if (!repEx){
-            System.out.println("Pas de réponse trouvé");
+            // System.out.println("Pas de réponse trouvé");
         }
     }
 }
