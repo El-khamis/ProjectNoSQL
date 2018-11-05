@@ -44,31 +44,38 @@ public class dictionnaire {
     }
 
 
-    //fonction qui remplis l'array liste pour avoir la première vers7ion du dico
+    //fonction qui remplis l'array liste pour avoir la première version du dico
+
+    /**
+     *
+     * @param st
+     * @throws FileNotFoundException
+     * @throws UnsupportedEncodingException
+     * Virer les 3 if
+     * utiliser les hashset pour éviter les doublons
+     * ou bien vier les doublons ailleurs
+     *
+     */
     public void addArrayList(Statement st) throws FileNotFoundException, UnsupportedEncodingException {
 
-        if (!ourElements.contains(st.getSubject().toString())) {
-            ourElements.add(st.getSubject().toString());
-        }
+//        if (!ourElements.contains(st.getSubject().toString())) {
+//            ourElements.add(st.getSubject().toString());
+//        }
         sujet_string.add(st.getSubject().toString());
 
         this.tailleMax++;
 
-        if (!ourElements.contains(st.getPredicate().toString())) {
-            ourElements.add(st.getPredicate().toString());
-        }
+//        if (!ourElements.contains(st.getPredicate().toString())) {
+//            ourElements.add(st.getPredicate().toString());
+//        }
         predicat_string.add(st.getPredicate().toString());
 
-
-        if (!ourElements.contains(st.getObject().toString())) {
-            ourElements.add(st.getObject().toString());
-        }
+//        if (!ourElements.contains(st.getObject().toString())) {
+//            ourElements.add(st.getObject().toString());
+//        }
         objet_string.add(st.getObject().toString());
 
-
     }
-
-
 
      public void Index_creation(ArrayList<Integer> list1,ArrayList<Integer>  list2,ArrayList<Integer>  liste3,
                                 TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>> index
@@ -133,16 +140,23 @@ public class dictionnaire {
      }
 
     public void makeDictionnary() throws IOException {
-
+        long start = System.currentTimeMillis();
+        float elapsedTime = System.currentTimeMillis() - start;
+        elapsedTime =  (elapsedTime /  1000F);
          int compteur = 0;
-
+        //ourElements se doit de contenir uniquement les valeurs unique sinon il y aurai 2 cpt différents qui pointents vers le meme element
         Collections.sort(ourElements);
         //on remplie les dico de bases
         for (String s : ourElements) {
+            //a voir pour treemap ?
             hmap.put(s, cpt);
             hmap_inverse.put(cpt,s);
             cpt++;
         }
+
+        elapsedTime = System.currentTimeMillis() - start;
+        elapsedTime =  (elapsedTime /  1000F);
+        System.out.println("Fin première boucle "+ elapsedTime +"sec");
 
         for (String s: sujet_string) {
             sujet_int.add(hmap.get(s));
@@ -152,6 +166,12 @@ public class dictionnaire {
             predicat_int.add(hmap.get(predicat_string.get(compteur)));
             compteur++;
         }
+
+
+        elapsedTime = System.currentTimeMillis() - start;
+        elapsedTime =  (elapsedTime /  1000F);
+        System.out.println("Fin deuxieme boucle "+ elapsedTime +"sec");
+
         System.out.println("Le compteur fait "+compteur+" lignes ");
 
      }

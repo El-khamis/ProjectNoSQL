@@ -45,25 +45,21 @@ public final class RDFRawParser {
 
 	public static void main(String args[]) throws IOException {
 
-		long start = System.currentTimeMillis();
         Outils outil = new Outils();
-
+		long start = System.currentTimeMillis();
 		Reader reader = new FileReader(
 				"./donnees/100K.rdfxml");
 
 		org.openrdf.rio.RDFParser rdfParser = Rio.createParser(RDFFormat.RDFXML);
 		rdfParser.setRDFHandler(new RDFListener());
 		float elapsedTime = System.currentTimeMillis() - start;
-		elapsedTime = (long) (elapsedTime /  1000F);
-		System.out.println("Rio parse a pris "+ elapsedTime);
-
 
 
         try {
 			rdfParser.parse(reader, "");
-
+			elapsedTime = System.currentTimeMillis() - start;
 			elapsedTime =  (elapsedTime /  1000F);
-			System.out.println("Rdf.parse"+ elapsedTime);
+			System.out.println("Rdf.parse a pris" + elapsedTime);
 			dict.makeDictionnary();
 
             elapsedTime = System.currentTimeMillis() - start;
