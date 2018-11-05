@@ -1,9 +1,10 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.TreeSet;
 import java.util.Iterator;
-
-import static com.sun.org.apache.xml.internal.security.keys.keyresolver.KeyResolver.iterator;
 
 public class Outils {
 
@@ -11,6 +12,37 @@ public class Outils {
     String maVariable;
 
 
+    public void retrieve_requete(String path){
+        File folder = new File(path);
+        File[] listOfFiles = folder.listFiles();
+        String requete = " ";
+        String line;
+        BufferedReader br;
+
+        for (int i = 0; i < listOfFiles.length; i++) {
+            if (listOfFiles[i].isFile()) {
+                try{
+                    //je l'ouvre, je le parcours et pour chaque requete j'appelle parse_requeteString requete = " ";
+                        requete = " ";
+                        line = "";
+                        br = new BufferedReader(new FileReader(new File(path+"/"+listOfFiles[i].getName())));
+                        while ((line = br.readLine()) != null){
+                            requete+=" "+ line;
+                            if(line.contains("}")){
+                                parse_requete(requete, Main.dict);
+                                requete = "";
+                            }
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Une erreur est survnue "+e);
+                    }
+                System.out.println("File " + listOfFiles[i].getName());
+            }
+            else if (listOfFiles[i].isDirectory()) {
+                System.out.println("Directory " + listOfFiles[i].getName());
+            }
+        }
+    }
 
     public void parse_requete(String s,dictionnaire dict){
         s = s.replaceAll("\t", "");
@@ -63,128 +95,10 @@ public class Outils {
             }
 
         }
-        //execute_requete(predicats_int.get(0),objets_int.get(0),predicats_int.get(1),objets_int.get(1),predicats_int.get(2),objets_int.get(2),dict);
         execute_requetev2(predicats_int,objets_int,dict);
-        //      System.out.println("La requete est une requete étoile dont la variable est "+maVariable+" et dont les prédicats sont :"+ predicats.toString()+""+predicats_int.toString()+"\n");
-        //     System.out.println("La requete est une requete étoile dont la variable est "+maVariable+" et dont les objets sont :"+ objets.toString()+""+objets_int.toString()+"\n");
 
-//
-//        predicats_int.clear();
-//        objets_int.clear();
     }
 
-
-    /**
-     *
-     * @param p1 predicat 1
-     * @param o1 objet 1
-     * @param p2 predicat 2
-     * @param o2 objet 2
-     * @param p3 predicat 3
-     * @param o3 objet 3
-     * @param dict instance du dico courant
-     *
-     * Cette fonction a pour but d'executer une requete préalablement parser
-     */
-    public void execute_requete(int p1, int o1, int p2, int o2, int p3, int o3, dictionnaire dict){
-        int premierPartieStat, deuxiemePartieStat, troisiemePartieStat;
-        TreeSet premierPartie, deuxiemePartie, troisiemePartie;
-        ArrayList<Integer> valeur= new  ArrayList<Integer> () ;
-
-        /**
-         *  On compare les stats sur les indexes afin de récupérer le treeset le plus petit( le + selectif)
-         **/
-
-        /**
-         * On doit check si les valeurs p1 o1 existent vraiment
-         */
-        if(dict.statistique_objet.containsKey(o1) && dict.statistique_objet.containsKey(o2) && dict.statistique_objet.containsKey(o3) &&
-                dict.statistique_predicat.containsKey(p1) &&  dict.statistique_predicat.containsKey(p2) && dict.statistique_predicat.containsKey(p3))
-        {
-
-
-
-            if(dict.statistique_predicat.get(p1)> dict.statistique_objet.get(o1)){
-                premierPartie = dict.ops.get(o1).get(p1);
-                premierPartieStat = premierPartie.size();
-            }
-            else{
-                premierPartie = dict.pos.get(p1).get(o1);
-                premierPartieStat = premierPartie.size();
-            }
-
-            if(dict.statistique_predicat.get(p2)> dict.statistique_objet.get(o2)){
-                deuxiemePartie = dict.ops.get(o2).get(p2);
-                deuxiemePartieStat = deuxiemePartie.size();
-            }
-            else{
-                deuxiemePartie = dict.pos.get(p2).get(o2);
-                deuxiemePartieStat = deuxiemePartie.size();
-            }
-
-            if(dict.statistique_predicat.get(p3)> dict.statistique_objet.get(o3)){
-                troisiemePartie = dict.ops.get(o3).get(p3);
-                troisiemePartieStat = troisiemePartie.size();
-            }
-            else{
-                troisiemePartie = dict.pos.get(p3).get(o3);
-                troisiemePartieStat = troisiemePartie.size();
-            }
-
-
-            /**
-             * Partie optimisation requêtage
-             * On selectionne le treeset le + selectif
-             * De plus jointure à partir du Treeset le + petit avec les autres Treeset
-             */
-            System.out.println("la valeur premierpartie est "+premierPartie.toString()+"\n la valeur deuxiemepartie est "+deuxiemePartie.toString()+"\nla valeur troisièmepartie"+troisiemePartie+"\n \n");
-
-            if (premierPartieStat == Math.min(Math.min(premierPartieStat, deuxiemePartieStat), troisiemePartieStat)){
-                Iterator iterator = premierPartie.iterator();
-                while (iterator.hasNext()){
-
-                    int i= (int) iterator.next();
-                    if (troisiemePartie.contains(i)&&deuxiemePartie.contains(i)){
-
-                        valeur.add(i);
-                    }
-
-                }
-            }
-
-
-            if (deuxiemePartieStat == Math.min(Math.min(premierPartieStat, deuxiemePartieStat), troisiemePartieStat)){
-                Iterator iterator = deuxiemePartie.iterator();
-                while (iterator.hasNext()){
-                    iterator.next();
-                    if (troisiemePartie.contains(iterator.next())&&premierPartie.contains(iterator.next())){
-                        valeur.add((int)iterator.next());
-                    }
-                }
-            }
-
-
-            if (troisiemePartieStat == Math.min(Math.min(premierPartieStat, deuxiemePartieStat), troisiemePartieStat)){
-                Iterator iterator = troisiemePartie.iterator();
-                while (iterator.hasNext()){
-                    iterator.next();
-                    if (premierPartie.contains(iterator.next())&&deuxiemePartie.contains(iterator.next())){
-
-                        valeur.add((int)iterator.next());
-                    }
-                }
-            }
-        }
-        for (int i:valeur) {
-            String s=dict.hmap_inverse.get(i);
-            System.out.println("la valeur i est "+i+"la réponse est "+s+"");
-        }
-        if(valeur.isEmpty())
-        {
-            // System.out.println("pas de réponse à la requete");
-
-        }
-    }
 
     public void execute_requetev2(ArrayList<Integer> listP, ArrayList<Integer> listO, dictionnaire dict){
         Boolean repEx = false;

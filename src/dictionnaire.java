@@ -58,24 +58,14 @@ public class dictionnaire {
      */
     public void addArrayList(Statement st) throws FileNotFoundException, UnsupportedEncodingException {
 
-//        if (!ourElements.contains(st.getSubject().toString())) {
-//            ourElements.add(st.getSubject().toString());
-//        }
-
         ourElements.add(st.getSubject().toString());
         sujet_string.add(st.getSubject().toString());
 
         this.tailleMax++;
 
-//        if (!ourElements.contains(st.getPredicate().toString())) {
-//            ourElements.add(st.getPredicate().toString());
-//        }
         ourElements.add(st.getPredicate().toString());
         predicat_string.add(st.getPredicate().toString());
 
-//        if (!ourElements.contains(st.getObject().toString())) {
-//            ourElements.add(st.getObject().toString());
-//        }
         ourElements.add(st.getObject().toString());
         objet_string.add(st.getObject().toString());
 
