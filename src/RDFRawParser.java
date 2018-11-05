@@ -48,7 +48,7 @@ public final class RDFRawParser {
         Outils outil = new Outils();
 		long start = System.currentTimeMillis();
 		Reader reader = new FileReader(
-				"./donnees/100K.rdfxml");
+				"./donnees/500K.rdfxml");
 
 		org.openrdf.rio.RDFParser rdfParser = Rio.createParser(RDFFormat.RDFXML);
 		rdfParser.setRDFHandler(new RDFListener());

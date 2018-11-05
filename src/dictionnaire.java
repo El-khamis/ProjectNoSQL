@@ -12,8 +12,8 @@ public class dictionnaire {
   public  HashMap<String, Integer> hmap = new HashMap<String , Integer>();
   public  HashMap<Integer,String > hmap_inverse = new HashMap<Integer , String>();
   public  int tailleMax = 0;
-  public  ArrayList<String> ourElements = new ArrayList<>();
-
+  //public  ArrayList<String> ourElements = new ArrayList<>();
+    public HashSet<String> ourElements = new HashSet();
     //index
     //predicat en 1er
   public  TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>> pos =new TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>>();
@@ -61,6 +61,8 @@ public class dictionnaire {
 //        if (!ourElements.contains(st.getSubject().toString())) {
 //            ourElements.add(st.getSubject().toString());
 //        }
+
+        ourElements.add(st.getSubject().toString());
         sujet_string.add(st.getSubject().toString());
 
         this.tailleMax++;
@@ -68,11 +70,13 @@ public class dictionnaire {
 //        if (!ourElements.contains(st.getPredicate().toString())) {
 //            ourElements.add(st.getPredicate().toString());
 //        }
+        ourElements.add(st.getPredicate().toString());
         predicat_string.add(st.getPredicate().toString());
 
 //        if (!ourElements.contains(st.getObject().toString())) {
 //            ourElements.add(st.getObject().toString());
 //        }
+        ourElements.add(st.getObject().toString());
         objet_string.add(st.getObject().toString());
 
     }
@@ -145,7 +149,7 @@ public class dictionnaire {
         elapsedTime =  (elapsedTime /  1000F);
          int compteur = 0;
         //ourElements se doit de contenir uniquement les valeurs unique sinon il y aurai 2 cpt différents qui pointents vers le meme element
-        Collections.sort(ourElements);
+        //Collections.sort(ourElements);
         //on remplie les dico de bases
         for (String s : ourElements) {
             //a voir pour treemap ?
