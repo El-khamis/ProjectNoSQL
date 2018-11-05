@@ -43,10 +43,10 @@ public final class RDFRawParser {
 		}
 	}
 
-	public static void main(String args[]) throws FileNotFoundException, UnsupportedEncodingException {
+	public static void main(String args[]) throws IOException {
 
 		long start = System.currentTimeMillis();
-
+        Outils outil = new Outils();
 
 		Reader reader = new FileReader(
 				"./donnees/100K.rdfxml");
@@ -58,42 +58,57 @@ public final class RDFRawParser {
 		System.out.println("Rio parse a pris "+ elapsedTime);
 
 
-			System.out.println("Veuillez entrer une requête");
-			String requete = " ";
-			String line;
-			BufferedReader br;
-			br = new BufferedReader(new FileReader(new File("./donnees/requetes.txt")));
-			while ((line = br.readLine()) != null){
-                requete+=" "+ line;
 
-                if(line.contains("}")){
-                    outil.parse_requete(requete);
-                    requete = "";
-                }
-                else if(requete.contains("}")){
+        try {
+			rdfParser.parse(reader, "");
 
-                }
-			}
-
+			elapsedTime =  (elapsedTime /  1000F);
+			System.out.println("Rdf.parse"+ elapsedTime);
 			dict.makeDictionnary();
 
             elapsedTime = System.currentTimeMillis() - start;
             elapsedTime =  (elapsedTime /  1000F);
 			System.out.println("Makedico a pris "+ elapsedTime +"sec");
             //index pos
-            dict.Index_creation(dict.sujet_int,dict.predicat_int,dict.objet_int,dict.spo,dict.statistique_sujet_predicat,dict.statistique_sujet);
+        //    dict.Index_creation(dict.sujet_int,dict.predicat_int,dict.objet_int,dict.pos,dict.statistique_predicat_objet,dict.statistique_predicat);
 			//index print
 
-			elapsedTime = System.currentTimeMillis() - start;
+
+            dict.Index_creation(dict.objet_int,dict.predicat_int,dict.sujet_int,dict.ops,dict.statistique_objet);
+
+            dict.Index_creation(dict.predicat_int,dict.objet_int,dict.sujet_int,dict.pos,dict.statistique_predicat);
+
+            //dict.Index_creation(dict.objet_int,dict.predicat_int,dict.sujet_int,dict.ops,dict.statistique_objet_predicat,dict.statistique_objet);
+
+            elapsedTime = System.currentTimeMillis() - start;
 			elapsedTime =  (elapsedTime /  1000F);
-			System.out.println("execution termine en  "+ elapsedTime+"sec");
-		} catch (Exception e) {
+			System.out.println("execution termine en  "+ elapsedTime+" sec");
+
+
+
+        System.out.println("Veuillez entrer une requête");
+        String requete = " ";
+        String line;
+        BufferedReader br;
+        br = new BufferedReader(new FileReader(new File("./donnees/requetes.txt")));
+        while ((line = br.readLine()) != null){
+            requete+=" "+ line;
+
+            if(line.contains("}")){
+                outil.parse_requete(requete,dict);
+                requete = "";
+            }
+
+        }
+            		} catch (Exception e) {
 
 		}
 
 		try {
 			reader.close();
 		} catch (IOException e) {
+		    System.out.println(e);
 		}
+
+        }
 	}
-}
