@@ -41,8 +41,8 @@ public class Main {
         String pathD = argument.get(argument.indexOf("-data")+1).replaceAll("\"","");
         String pathO = argument.get(argument.indexOf("-output")+1).replaceAll("\"","");
 
-        BufferedWriter writer = new BufferedWriter(new FileWriter(new File(pathO+"/tempsDexecution.txt"), true));
-        String TpsDexecution="";
+        BufferedWriter writer = new BufferedWriter(new FileWriter(new File(pathO+"/tempsDexecution.csv"), false));
+        ArrayList<String> OutputTxt = new ArrayList<>();
 
         Outils outil = new Outils();
         long start = System.currentTimeMillis();
@@ -51,39 +51,52 @@ public class Main {
         float elapsedTime = System.currentTimeMillis() - start;
         elapsedTime = System.currentTimeMillis() - start;
         elapsedTime =  (elapsedTime /  1000F);
-        TpsDexecution+="Parser le fichier "+pathD+" a pris "+elapsedTime+" secondes\n";
+        OutputTxt.add("Parser le fichier "+pathD+" a pris,"+elapsedTime+" secondes\n");
         //System.out.println("Rdf.parse a pris" + elapsedTime);
-
+        start=System.currentTimeMillis();
         dict.makeDictionnary();
 
         elapsedTime = System.currentTimeMillis() - start;
         elapsedTime =  (elapsedTime /  1000F);
-        TpsDexecution+="La génération du dico a pris "+elapsedTime+"secondes\n";
+        OutputTxt.add("La génération du dico a pris,"+elapsedTime+"secondes\n");
         //System.out.println("Makedico a pris "+ elapsedTime +"sec");
 
+        start=System.currentTimeMillis();
         dict.Index_creation(dict.objet_int,dict.predicat_int,dict.sujet_int,dict.ops,dict.statistique_objet);
-        dict.Index_creation(dict.predicat_int,dict.objet_int,dict.sujet_int,dict.pos,dict.statistique_predicat);
-
         elapsedTime = System.currentTimeMillis() - start;
         elapsedTime =  (elapsedTime /  1000F);
         //System.out.println("execution termine en  "+ elapsedTime+" sec");
-        TpsDexecution+="L'execute a pris "+elapsedTime+"secondes\n";
+        OutputTxt.add("La creation de l'index OPS a pris,"+elapsedTime+"secondes\n");
+
+        start=System.currentTimeMillis();
+        dict.Index_creation(dict.predicat_int,dict.objet_int,dict.sujet_int,dict.pos,dict.statistique_predicat);
+        elapsedTime = System.currentTimeMillis() - start;
+        elapsedTime =  (elapsedTime /  1000F);
+        //System.out.println("execution termine en  "+ elapsedTime+" sec");
+        OutputTxt.add("La creation de l'index POS a pris,"+elapsedTime+"secondes\n");
+
+
 //        System.out.println("Maintenant place aux requetes ");
+        start=System.currentTimeMillis();
         outil.retrieve_requete(pathQ);
         elapsedTime = System.currentTimeMillis() - start;
         elapsedTime =  (elapsedTime /  1000F);
-        TpsDexecution+="L'execution de l'ensemble des requetes a pris "+elapsedTime+"secondes\n";
-        writer.append(TpsDexecution);
+        if(argument.contains("-workload_time")){
+            OutputTxt.add("L'execution de l'ensemble des requetes a pris,"+elapsedTime+"secondes\n");
+        }
+        for (String txt : OutputTxt) {
+            writer.write(txt);
+            //writer.newLine();
+        }
         writer.close();
 
         if(argument.contains("-verbose")){
             BufferedReader br = null;
             FileReader fr = null;
-             fr = new FileReader(pathO+"/tempsDexecution.txt");
-             br = new BufferedReader(fr);
+            fr = new FileReader(pathO+"/tempsDexecution.csv");
+            br = new BufferedReader(fr);
 
             String sCurrentLine;
-
             while ((sCurrentLine = br.readLine()) != null) {
                 System.out.println(sCurrentLine);
             }

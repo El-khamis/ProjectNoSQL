@@ -134,9 +134,6 @@ public class dictionnaire {
      }
 
     public void makeDictionnary() throws IOException {
-        long start = System.currentTimeMillis();
-        float elapsedTime = System.currentTimeMillis() - start;
-        elapsedTime =  (elapsedTime /  1000F);
          int compteur = 0;
         //ourElements se doit de contenir uniquement les valeurs unique sinon il y aurai 2 cpt différents qui pointents vers le meme element
         //Collections.sort(ourElements);
@@ -147,11 +144,6 @@ public class dictionnaire {
             hmap_inverse.put(cpt,s);
             cpt++;
         }
-
-        elapsedTime = System.currentTimeMillis() - start;
-        elapsedTime =  (elapsedTime /  1000F);
-        System.out.println("Fin première boucle "+ elapsedTime +"sec");
-
         for (String s: sujet_string) {
             sujet_int.add(hmap.get(s));
             //on récupère les key assossier aux objet en fonction de leur position dans l'array list
@@ -160,13 +152,7 @@ public class dictionnaire {
             predicat_int.add(hmap.get(predicat_string.get(compteur)));
             compteur++;
         }
-
-
-        elapsedTime = System.currentTimeMillis() - start;
-        elapsedTime =  (elapsedTime /  1000F);
-        System.out.println("Fin deuxieme boucle "+ elapsedTime +"sec");
-
-        System.out.println("Le compteur fait "+compteur+" lignes ");
+        System.out.println("Le fichier 500K fait "+compteur+" lignes ");
 
      }
 
