@@ -1,26 +1,17 @@
-import org.openrdf.rio.RDFHandlerException;
-import org.openrdf.rio.RDFParseException;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Main {
     static dictionnaire dict;
-
     static {
-        try {
-            dict = new dictionnaire();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        dict = new dictionnaire();
     }
+    static String pathO="";
 
-    public static void main(String args[]) throws IOException, RDFParseException, RDFHandlerException {
+    public static void main(String args[]) throws Exception {
         ArrayList<String> argument = new ArrayList<>();
-        for (String arg : args){
-            argument.add(arg);
-        }
+        argument.addAll(Arrays.asList(args));
 
         if(!argument.contains("-queries")){
             System.out.println("Chemin vers le dossier contenant les requetes manquant");
@@ -39,26 +30,24 @@ public class Main {
 
         String pathQ= argument.get(argument.indexOf("-queries")+1).replaceAll("\"","");
         String pathD = argument.get(argument.indexOf("-data")+1).replaceAll("\"","");
-        String pathO = argument.get(argument.indexOf("-output")+1).replaceAll("\"","");
+        pathO = argument.get(argument.indexOf("-output")+1).replaceAll("\"","");
 
         BufferedWriter writer = new BufferedWriter(new FileWriter(new File(pathO+"/tempsDexecution.csv"), false));
         ArrayList<String> OutputTxt = new ArrayList<>();
 
         Outils outil = new Outils();
         long start = System.currentTimeMillis();
-        RDFRawParser.runParser(pathQ,pathD);
-        //try {
+        RDFRawParser.runParser(pathD);
         float elapsedTime = System.currentTimeMillis() - start;
-        elapsedTime = System.currentTimeMillis() - start;
         elapsedTime =  (elapsedTime /  1000F);
-        OutputTxt.add("Parser le fichier "+pathD+" a pris,"+elapsedTime+" secondes\n");
+        OutputTxt.add("Parsing du fichier "+pathD+","+elapsedTime+" secondes\n");
         //System.out.println("Rdf.parse a pris" + elapsedTime);
         start=System.currentTimeMillis();
         dict.makeDictionnary();
 
         elapsedTime = System.currentTimeMillis() - start;
         elapsedTime =  (elapsedTime /  1000F);
-        OutputTxt.add("La génération du dico a pris,"+elapsedTime+"secondes\n");
+        OutputTxt.add("Génération du dico,"+elapsedTime+" secondes\n");
         //System.out.println("Makedico a pris "+ elapsedTime +"sec");
 
         start=System.currentTimeMillis();
@@ -66,14 +55,14 @@ public class Main {
         elapsedTime = System.currentTimeMillis() - start;
         elapsedTime =  (elapsedTime /  1000F);
         //System.out.println("execution termine en  "+ elapsedTime+" sec");
-        OutputTxt.add("La creation de l'index OPS a pris,"+elapsedTime+"secondes\n");
+        OutputTxt.add("Creation de l'index OPS,"+elapsedTime+" secondes\n");
 
         start=System.currentTimeMillis();
         dict.Index_creation(dict.predicat_int,dict.objet_int,dict.sujet_int,dict.pos,dict.statistique_predicat);
         elapsedTime = System.currentTimeMillis() - start;
         elapsedTime =  (elapsedTime /  1000F);
         //System.out.println("execution termine en  "+ elapsedTime+" sec");
-        OutputTxt.add("La creation de l'index POS a pris,"+elapsedTime+"secondes\n");
+        OutputTxt.add("Creation de l'index POS,"+elapsedTime+" secondes\n");
 
 
 //        System.out.println("Maintenant place aux requetes ");
@@ -82,24 +71,33 @@ public class Main {
         elapsedTime = System.currentTimeMillis() - start;
         elapsedTime =  (elapsedTime /  1000F);
         if(argument.contains("-workload_time")){
-            OutputTxt.add("L'execution de l'ensemble des requetes a pris,"+elapsedTime+"secondes\n");
+            OutputTxt.add("Execution de l'ensemble des requetes,"+elapsedTime+"secondes\n");
         }
         for (String txt : OutputTxt) {
             writer.write(txt);
-            //writer.newLine();
         }
         writer.close();
-
         if(argument.contains("-verbose")){
-            BufferedReader br = null;
-            FileReader fr = null;
-            fr = new FileReader(pathO+"/tempsDexecution.csv");
-            br = new BufferedReader(fr);
-
+            FileReader fr = new FileReader(pathO+"/tempsDexecution.csv");
+            BufferedReader br = new BufferedReader(fr);
             String sCurrentLine;
             while ((sCurrentLine = br.readLine()) != null) {
                 System.out.println(sCurrentLine);
             }
+        }
+        if(argument.contains("--export_results")){
+            BufferedWriter WriteRequete = new BufferedWriter(new FileWriter(new File(Main.pathO+"/reponsesRequetes.csv"), false));
+            for (int j=0; j<outil.OutputRep.size();j++)
+            {
+                WriteRequete.write(outil.OutputRep.get(j));
+                WriteRequete.write(outil.Outputrep2.get(j));
+                WriteRequete.write(outil.Outputrep3.get(j));
+            }
+            WriteRequete.close();
+        }
+        else{
+            File file = new File(pathO+"/reponsesRequete.csv");
+            file.delete();
         }
     }
 }

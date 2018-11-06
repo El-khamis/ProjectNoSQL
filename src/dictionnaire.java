@@ -1,53 +1,42 @@
-import javafx.beans.value.ObservableBooleanValue;
 import org.openrdf.model.Statement;
 import java.util.TreeMap;
-import java.util.Set;
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.*;
 
-public class dictionnaire {
+ class dictionnaire {
     int cpt = 0;
 
-  public  HashMap<String, Integer> hmap = new HashMap<String , Integer>();
-  public  HashMap<Integer,String > hmap_inverse = new HashMap<Integer , String>();
-  public  int tailleMax = 0;
-  //public  ArrayList<String> ourElements = new ArrayList<>();
-    public HashSet<String> ourElements = new HashSet();
+    HashMap<String, Integer> hmap = new HashMap<String , Integer>();
+    HashMap<Integer,String > hmap_inverse = new HashMap<Integer , String>();
+    int tailleMax = 0;
+  //  ArrayList<String> ourElements = new ArrayList<>();
+     HashSet<String> ourElements = new HashSet();
     //index
     //predicat en 1er
-  public  TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>> pos =new TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>>();
+    TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>> pos =new TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>>();
     //Stats
-  public  TreeMap<Integer,Double> statistique_predicat = new TreeMap<Integer,Double>();
-  public  TreeMap<Integer,TreeMap<Integer,Double>> statistique_predicat_objet = new TreeMap<Integer,TreeMap<Integer,Double>>();
+    TreeMap<Integer,Double> statistique_predicat = new TreeMap<Integer,Double>();
+    TreeMap<Integer,TreeMap<Integer,Double>> statistique_predicat_objet = new TreeMap<Integer,TreeMap<Integer,Double>>();
 
     //objet en 1er
-  public  TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>> ops =new TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>>();
+    TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>> ops =new TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>>();
     //stats//
-  public  TreeMap<Integer,Double> statistique_objet = new TreeMap<Integer,Double>();
-  public  TreeMap<Integer,TreeMap<Integer,Double>> statistique_objet_predicat = new TreeMap<Integer,TreeMap<Integer,Double>>();
+    TreeMap<Integer,Double> statistique_objet = new TreeMap<Integer,Double>();
+    TreeMap<Integer,TreeMap<Integer,Double>> statistique_objet_predicat = new TreeMap<Integer,TreeMap<Integer,Double>>();
 
 
     //ArrayList a remplir depuis RDF
-  public  ArrayList<String> objet_string = new ArrayList();
-  public  ArrayList<String> sujet_string = new ArrayList();
-  public  ArrayList<String> predicat_string = new ArrayList();
+    ArrayList<String> objet_string = new ArrayList();
+    ArrayList<String> sujet_string = new ArrayList();
+    ArrayList<String> predicat_string = new ArrayList();
 
     //ArrayList a remplir depuis Arraylist<String>
-  public  ArrayList<Integer> objet_int = new ArrayList();
-  public  ArrayList<Integer> sujet_int = new ArrayList();
-  public  ArrayList<Integer> predicat_int = new ArrayList();
-
-    public dictionnaire() throws FileNotFoundException, UnsupportedEncodingException {
-
-
-    }
-
+    ArrayList<Integer> objet_int = new ArrayList();
+    ArrayList<Integer> sujet_int = new ArrayList();
+    ArrayList<Integer> predicat_int = new ArrayList();
 
     //fonction qui remplis l'array liste pour avoir la première version du dico
-
     /**
-     *
      * @param st
      * @throws FileNotFoundException
      * @throws UnsupportedEncodingException
@@ -56,7 +45,7 @@ public class dictionnaire {
      * ou bien vier les doublons ailleurs
      *
      */
-    public void addArrayList(Statement st) throws FileNotFoundException, UnsupportedEncodingException {
+     void addArrayList(Statement st) throws FileNotFoundException, UnsupportedEncodingException {
 
         ourElements.add(st.getSubject().toString());
         sujet_string.add(st.getSubject().toString());
@@ -71,7 +60,7 @@ public class dictionnaire {
 
     }
 
-     public void Index_creation(ArrayList<Integer> list1,ArrayList<Integer>  list2,ArrayList<Integer>  liste3,
+     void Index_creation(ArrayList<Integer> list1,ArrayList<Integer>  list2,ArrayList<Integer>  liste3,
                                 TreeMap<Integer,TreeMap<Integer,TreeSet<Integer>>> index
                                 ,TreeMap<Integer,Double>stat_secondaire) throws IOException {
 
@@ -133,7 +122,7 @@ public class dictionnaire {
          }
      }
 
-    public void makeDictionnary() throws IOException {
+     void makeDictionnary() throws IOException {
          int compteur = 0;
         //ourElements se doit de contenir uniquement les valeurs unique sinon il y aurai 2 cpt différents qui pointents vers le meme element
         //Collections.sort(ourElements);
@@ -153,7 +142,5 @@ public class dictionnaire {
             compteur++;
         }
         System.out.println("Le fichier 500K fait "+compteur+" lignes ");
-
      }
-
 }

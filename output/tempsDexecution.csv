@@ -1,5 +1,5 @@
-Parser le fichier ./donnees/500K.rdfxml a pris ,2.744 secondes
-La génération du dico a pris ,0.106secondes
-La creation de l'index OPS a pris ,0.601secondes
-La creation de l'index POS a pris ,0.302secondes
-L'execution de l'ensemble des requetes a pris ,28.473secondes
+Parsing du fichier ./donnees/500K.rdfxml,2.813 secondes
+Génération du dico,0.119 secondes
+Creation de l'index OPS,0.618 secondes
+Creation de l'index POS,0.32 secondes
+Execution de l'ensemble des requetes,5.137secondes

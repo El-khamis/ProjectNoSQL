@@ -12,11 +12,11 @@ import org.openrdf.rio.helpers.RDFHandlerBase;
 
 
 
-public final class RDFRawParser {
+final class RDFRawParser {
 
 
 
-	public static void runParser(String pathQ, String pathD) throws IOException, RDFParseException, RDFHandlerException {
+	static void runParser(String pathD) throws IOException, RDFParseException, RDFHandlerException {
 		Reader reader = new FileReader(
 				pathD);
 		org.openrdf.rio.RDFParser rdfParser = Rio.createParser(RDFFormat.RDFXML);
@@ -29,16 +29,13 @@ public final class RDFRawParser {
 		}
 	}
 
-
 	private static class RDFListener extends RDFHandlerBase {
 
 		@Override
 		public void handleStatement(Statement st) {
 			try {
 				Main.dict.addArrayList(st);
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (UnsupportedEncodingException e) {
+			} catch (FileNotFoundException | UnsupportedEncodingException e) {
 				e.printStackTrace();
 			}
 		}
