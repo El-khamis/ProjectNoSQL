@@ -5,14 +5,14 @@ import java.util.TreeSet;
 import java.util.Iterator;
 
 public class Outils {
-
-
     String maVariable;
     BufferedReader br;
     BufferedWriter WriteRequete = new BufferedWriter(new FileWriter(new File(Main.pathO+"/reponsesRequetes.csv"), false));
-   static ArrayList<String> OutputRep = new ArrayList<>();
-   static ArrayList<String> Outputrep2 = new ArrayList<>();
+    static ArrayList<String> OutputRep = new ArrayList<>();
+    static ArrayList<String> Outputrep2 = new ArrayList<>();
     static ArrayList<String> Outputrep3 = new ArrayList<>();
+    static ArrayList<String> listQuery = new ArrayList<>();
+
     public Outils() throws IOException {
     }
 
@@ -34,9 +34,9 @@ public class Outils {
                         while((line = br.readLine()) != null){
                             requete+=" "+ line;
                             if(line.contains("}")){
-
                                 OutputRep.add(requete+" ,");
-                                parse_requete(requete, Main.dict);
+                                //parse_requete(requete, Main.dict);
+                                listQuery.add(requete);
                                 nmbrRqt++;
                              //   System.out.println(requete);
                                 requete = "";
@@ -46,17 +46,12 @@ public class Outils {
                     } catch (Exception e) {
                         System.out.println("Une erreur est survenue "+e);
                 }
-                System.out.println("Le fichier "+listOfFiles[i].getName()+" a "+nmbrRqt+" requetes");
                 nmbrRqt=0;
             }
-            int cpt=0;
-
         }
-
-
     }
 
-    public void parse_requete(String s,dictionnaire dict){
+    public void parse_requete(String s, dictionnaire dict){
         s = s.replaceAll("\t", "");
         String[] corps = s.split("\\{");
         String[] entete = corps[0].split(" ");
@@ -136,12 +131,12 @@ public class Outils {
                      */
                     try{
                         if(dict.ops.get(listO.get(i)).containsKey(listP.get(i))){
-                            for (Object o : dict.ops.get(listO.get(i)).get(listP.get(i))) {
-                                int maVar = (int) o;
-                                if (dict.sujet_int.contains(maVar)) {
-                                    reponse.add(maVar);
+                            for (Integer o : dict.ops.get(listO.get(i)).get(listP.get(i))) {
+                               // int maVar =  o;
+                                if (dict.sujet_int.contains(o)) {
+                                    reponse.add(o);
                                 } else {
-                                    Outputrep2.add("Ce n'est pas un sujet " + dict.hmap_inverse.get(maVar) + "\n");
+                                    Outputrep2.add("Ce n'est pas un sujet " + dict.hmap_inverse.get(o) + "\n");
                                     Outputrep3.add("aucune réponse");
                                     //System.out.println("Ce n'est pas un sujet "+dict.hmap_inverse.get(maVar));
                                     return;
@@ -237,4 +232,5 @@ public class Outils {
             return;
         }
     }
+
 }

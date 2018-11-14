@@ -1,6 +1,7 @@
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 public class Main {
     static dictionnaire dict;
@@ -66,10 +67,17 @@ public class Main {
 
 
 //        System.out.println("Maintenant place aux requetes ");
-        start=System.currentTimeMillis();
         outil.retrieve_requete(pathQ);
-        elapsedTime = System.currentTimeMillis() - start;
-        elapsedTime =  (elapsedTime /  1000F);
+        Collections.shuffle(outil.listQuery);
+        for( int i=0;i<10;i++) {
+            start = System.currentTimeMillis();
+            for (String req : outil.listQuery) {
+                outil.parse_requete(req, Main.dict);
+            }
+            elapsedTime = System.currentTimeMillis() - start;
+            elapsedTime = (elapsedTime / 1000F);
+            OutputTxt.add("Execution de l'ensemble des requetes,"+elapsedTime+"secondes\n");
+        }
         if(argument.contains("-workload_time")){
             OutputTxt.add("Execution de l'ensemble des requetes,"+elapsedTime+"secondes\n");
         }
