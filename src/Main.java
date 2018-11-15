@@ -5,6 +5,7 @@ import java.util.Collections;
 
 public class Main {
     static dictionnaire dict;
+    static double totalTime=0.0;
     static {
         dict = new dictionnaire();
     }
@@ -68,18 +69,26 @@ public class Main {
 
 //        System.out.println("Maintenant place aux requetes ");
         outil.retrieve_requete(pathQ);
-        Collections.shuffle(outil.listQuery);
-        for( int i=0;i<10;i++) {
-            start = System.currentTimeMillis();
-            for (String req : outil.listQuery) {
-                outil.parse_requete(req, Main.dict);
-            }
-            elapsedTime = System.currentTimeMillis() - start;
-            elapsedTime = (elapsedTime / 1000F);
-            OutputTxt.add("Execution de l'ensemble des requetes,"+elapsedTime+"secondes\n");
+//        Collections.shuffle(outil.listQuery);
+//        for( int i=0;i<10;i++) {
+//            start = System.currentTimeMillis();
+//            for (String req : outil.listQuery) {
+//                outil.parse_requete(req, Main.dict);
+//            }
+//            elapsedTime = System.currentTimeMillis() - start;
+//            elapsedTime = (elapsedTime / 1000F);
+//            OutputTxt.add("Execution de l'ensemble des requetes,"+elapsedTime+"secondes\n");
+//        }
+
+        start = System.currentTimeMillis();
+        for (String req : outil.listQuery) {
+            outil.parse_requete(req, Main.dict);
         }
+        elapsedTime = System.currentTimeMillis() - start;
+        elapsedTime = (elapsedTime / 1000F);
         if(argument.contains("-workload_time")){
             OutputTxt.add("Execution de l'ensemble des requetes,"+elapsedTime+"secondes\n");
+            OutputTxt.add("Temps pour frequency = "+totalTime+"secondes");
         }
         for (String txt : OutputTxt) {
             writer.write(txt);
@@ -93,13 +102,13 @@ public class Main {
                 System.out.println(sCurrentLine);
             }
         }
-        if(argument.contains("--export_results")){
+        if(argument.contains("-export_results")){
             BufferedWriter WriteRequete = new BufferedWriter(new FileWriter(new File(Main.pathO+"/reponsesRequetes.csv"), false));
             for (int j=0; j<outil.OutputRep.size();j++)
             {
-                WriteRequete.write(outil.OutputRep.get(j));
+                //WriteRequete.write(outil.OutputRep.get(j));
                 WriteRequete.write(outil.Outputrep2.get(j));
-                WriteRequete.write(outil.Outputrep3.get(j));
+                //WriteRequete.write(outil.Outputrep3.get(j));
             }
             WriteRequete.close();
         }
@@ -107,5 +116,31 @@ public class Main {
             File file = new File(pathO+"/reponsesRequete.csv");
             file.delete();
         }
+        BufferedReader jena = new BufferedReader(new FileReader(new File("../jena/sortie.csv")));
+
+        String line;
+        String moteur="";
+        int i=0;
+        float prec = 0;
+        while ((line = jena.readLine()) != null) {
+                moteur = outil.Outputrep2.get(i);
+                if(line.contains("v0")) {
+                    i++;
+                    if(!moteur.contains(line))
+                    {
+                        System.out.println("la requete " +outil.OutputRep.get(i) +"ne contient pas " +line+" il contient\n" +moteur);
+                        moteur="";
+                    }
+                    else{
+                        //System.out.println("je marche");
+                        prec++;
+                        moteur="";
+                    }
+
+                }
+
+        }
+        prec = (prec/i)*100;
+        System.out.println("Vous avez "+prec+"% de précision\n");
     }
 }

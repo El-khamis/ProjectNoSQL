@@ -107,7 +107,7 @@ public class Outils {
         execute_requete(predicats_int,objets_int,dict);
     }
 
-    public void execute_requete(ArrayList<Integer> listP, ArrayList<Integer> listO, dictionnaire dict){
+    public void execute_requete(ArrayList<Integer> listP, ArrayList<Integer> listO, dictionnaire dict)  {
         Boolean repEx = false;
         ArrayList<Integer> stockRep = new ArrayList<>();
         ArrayList<Integer> reponse = new ArrayList<>();
@@ -164,7 +164,7 @@ public class Outils {
                                 reponse.add(maVar);
                             }
                             else{
-                                Outputrep2.add("Ce n'est pas un sujet "+dict.hmap_inverse.get(maVar)+"\n");
+                                Outputrep2.add("Ce n'est pas un sujet "+dict.hmap_inverse.get(maVar)+"\r\n");
                                 Outputrep3.add("aucune réponse");
                                 // System.out.println("Ce n'est pas un sujet "+dict.hmap_inverse.get(maVar));
                                 return;
@@ -182,7 +182,8 @@ public class Outils {
                 }
             }
             else{
-                Outputrep2.add("Erreur de requete, objet ou predicat non existant\n");
+                Outputrep2.add("v0");
+                //Outputrep2.add("Erreur de requete, objet ou predicat non existant\r\n");
                 Outputrep3.add("aucune réponse");
                 //System.out.println("Erreur de requete, objet ou predicat non existant");
                 return;
@@ -190,7 +191,7 @@ public class Outils {
         }
 
         if (reponse.size()==0){
-            Outputrep2.add("Pas de reponse\n");
+            Outputrep2.add("v0\r\n");
             Outputrep3.add("aucune réponse");
             //System.out.println("La requete n'a pas de reponse");
             return;
@@ -199,9 +200,10 @@ public class Outils {
             String an="";
             for (Integer rep : reponse)
             {
-                an=an+dict.hmap_inverse.get(rep)+",";
+                an=an+dict.hmap_inverse.get(rep)+"\r\n";
                 //System.out.println("La reponse est "+rep+" ce qui correspond a "+dict.hmap_inverse.get(rep));
             }
+            an=an+"v0\r\n";
             Outputrep3.add("Il y a "+reponse.size()+"reponses\n");
             Outputrep2.add(an);
             return;
@@ -211,7 +213,7 @@ public class Outils {
             String an="";
             for (Integer rep: reponse) {
                 if(Collections.frequency(reponse,rep) == listP.size() && !stockRep.contains(rep)){
-                      an=an+dict.hmap_inverse.get(rep)+",";
+                      an=an+dict.hmap_inverse.get(rep)+"\r\n";
 
                     //System.out.println("La reponse est "+rep+" ce qui correspond a "+dict.hmap_inverse.get(rep));
                     stockRep.add(rep);
@@ -219,10 +221,11 @@ public class Outils {
                     repEx=true;
                 }
             }
+            an=an+"v0\r\n";
             Outputrep2.add(an);
         }
         if (!repEx){
-            Outputrep2.add("Pas de reponse\n");
+            Outputrep2.add("v0\r\n");
             Outputrep3.add("aucune réponse");
             return;
             //System.out.println("Pas de reponse trouve");
@@ -231,6 +234,7 @@ public class Outils {
             Outputrep3.add("Il y a "+stockRep.size()+"reponses\n");
             return;
         }
+        //Checking result with jena
     }
 
 }
